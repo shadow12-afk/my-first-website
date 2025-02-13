@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ffe6e6;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        img {
+            width: 300px;
+            height: 300px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            padding: 15px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .yes {
+            background-color: #2a9d8f;
+            color: white;
+        }
+
+        .no {
+            background-color: #f1faee;
+            color: #d3d3d3;
+            cursor: not-allowed;
+        }
+
+        .no-move {
+            position: absolute;
+            top: 150px;
+            left: 300px;
+        }
+
+        .message {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e63946;
+            margin-bottom: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img id="gifImage" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXV2eHhjamR3bDV3eGF3MmcycG5zbzFybDQ2ZngxNDl0OG0wcDA1MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gjHkRHSuHqu99y9Yjt/giphy.gif" alt="Cute Valentine Gif">
+    
+    <div class="message" id="messageText">Will you be my Valentine, my gorgeous Riya😘?</div>
+
+    <button class="button yes" id="yesButton">Yes</button>
+    <button class="button no" id="noButton" onclick="moveNoButton()">No</button>
+</div>
+
+<script>
+    const noButton = document.getElementById('noButton');
+    const yesButton = document.getElementById('yesButton');
+    const messageText = document.getElementById('messageText');
+    const gifImage = document.getElementById('gifImage');
+
+    const messages = [
+        { text: "Will you be my Valentine, my gorgeous Riya😘?", gif: "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXV2eHhjamR3bDV3eGF3MmcycG5zbzFybDQ2ZngxNDl0OG0wcDA1MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gjHkRHSuHqu99y9Yjt/giphy.gif" },
+        { text: "Yaar accept kar shistit😤?", gif: "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdjE0MDFkbGxwZmJ1ZTNhdzFwM3Ftb25tZHo1cmRrbTV3bWc0eGpiYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/aNFT7eG2rIKK715uLk/giphy.gif" },
+        { text: "lai bhav nko khaus accept kar😒?", gif: "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3gwNTNmeHB3YnBhZ3dnMGk2MXY0cHY2ZWk5M3BtdG1qZWs2M3VpZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/29bKyyjDKX1W8/giphy.gif" },
+        { text: "Shane lai marin accept kar😠?", gif: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGNtMjRqbTI3N2YxN2d4MTMweml6MnQ0Z3JybG8yZ2RjbWVqZTA5eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xD2zaBuJPNss6E6XwP/giphy.gif" },
+        { text: "Yaar please karna accept :( rulaoge kya🥹?", gif:"https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMTNlYjYxZmgwZjV3cmgwOGl2ZGs4cjc0M2dtdDg0eW1rMzBvODYzYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/12Bpme5pTzGmg8/giphy.gif" },
+        { text: "Yay! I love you too Chota Don 😘❤️", gif: "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTZvcXN3dDlrYnJwcDRpcHp5eWdmY254eDZtNThnODNxZ3NlYzZiNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IzXiddo2twMmdmU8Lv/giphy.gif" }
+    ];
+
+    let currentMessageIndex = 0;
+    let isFirstQuestionAsked = false;
+
+    function moveNoButton() {
+        
+        noButton.style.position = 'absolute';
+        noButton.style.top = `${Math.random() * 500}px`;
+        noButton.style.left = `${Math.random() * 500}px`;
+
+        
+        noButton.style.cursor = 'not-allowed';
+        noButton.setAttribute('disabled', 'true');
+
+    
+        if (!isFirstQuestionAsked) {
+            isFirstQuestionAsked = true;
+        } else {
+            currentMessageIndex++;
+            if (currentMessageIndex >= messages.length - 1) {
+                currentMessageIndex = 1; 
+            }
+        }
+
+        
+        messageText.textContent = messages[currentMessageIndex].text;
+        gifImage.src = messages[currentMessageIndex].gif;
+
+        setTimeout(() => {
+            noButton.style.position = 'static';
+            noButton.removeAttribute('disabled');
+            noButton.style.cursor = 'pointer';
+        }, 1500); 
+    }
+
+    yesButton.onclick = function () {
+        
+        messageText.textContent = messages[5].text;
+        gifImage.src = messages[5].gif;
+    
+        yesButton.disabled = true;
+        noButton.disabled = true;
+    };
+</script>
+
+</body>
+</html>
